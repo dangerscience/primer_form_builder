@@ -69,7 +69,7 @@ module PrimerFormBuilder
 
     def check_box_single(name, *args)
       cb = check_box(name, *(args << options))
-      cb << @object.class.human_attribute_name(name)
+      cb << human_name(name)
       tag.div tag.label(cb), class: "form-checkbox"
     end
 
@@ -117,6 +117,16 @@ module PrimerFormBuilder
       return false unless @object.respond_to?(:errors)
 
       @object.errors.key?(field)
+    end
+
+    private
+
+    def human_name(attribute)
+      if @object.class.respond_to?(:human_attribute_name)
+        @object.class.human_attribute_name attribute
+      else
+        I18n.t(:"activerecord.attributes.#{@object_name}.#{attribute}", default: attribute.to_s.humanize)
+      end
     end
   end
 end

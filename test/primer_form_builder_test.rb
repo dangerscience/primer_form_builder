@@ -67,4 +67,30 @@ class PrimerFormBuilderTest < ActionView::TestCase
   def test_check_if_errored
     assert @builder.errored?(:err_field)
   end
+
+  def should_get_human_name
+    model_class = Struct.new(:boolean)
+    i18n_model = model_class.new(boolean: true)
+    @i18n_builder = ::PrimerFormBuilder::Builder.new(:i18n_model, i18n_model, self, {})
+
+    cb = @rails_builder.check_box(:boolean)
+    cb << "Boolean"
+    expt = tag.div tag.label(cb), class: "form-checkbox"
+    assert_equal expt, @i18n_builder.check_box_single(:boolean)
+  end
+
+  def should_get_i18n_name
+    model_class = Struct.new(:boolean)
+    i18n_model = model_class.new(boolean: true)
+    @i18n_builder = ::PrimerFormBuilder::Builder.new(:i18n_model, i18n_model, self, {})
+
+    I18n.backend.store_translations :en, activerecord: {
+      attributes: { i18n_model: "BooleanValue" }
+    }
+
+    cb2 = @rails_builder.check_box(:boolean)
+    cb2 << "BooleanValue"
+    expt2 = tag.div tag.label(cb2), class: "form-checkbox"
+    assert_equal expt2, @i18n_builder.check_box_single(:boolean)
+  end
 end
