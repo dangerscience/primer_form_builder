@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 module PrimerFormBuilder
+  ##
+  # The Builder class is used by Rails to build forms with Primer markup.
+  #
+  # It should be passed as the +builder:+ argument to a +form_with+ method, i.e.
+  # +form_with builder: PrimerFormBuilder::Builder+.
   class Builder < ::ActionView::Helpers::FormBuilder
     delegate :tag, :safe_join, :capture, to: :@template
     alias plain_label label
