@@ -30,6 +30,11 @@ class PrimerFormBuilderTest < ActionView::TestCase
     end
   end
 
+  def test_generates_collection_select
+    assert_equal @rails_builder.collection_select(:select, SelectModel.all, :id, :name, {}, { class: "form-select" }),
+                 @builder.collection_select(:select, SelectModel.all, :id, :name)
+  end
+
   def test_generates_datetime_select
     assert_equal @rails_builder.datetime_select(:datetime, {}, { class: "form-select" }),
                  @builder.datetime_select(:datetime)

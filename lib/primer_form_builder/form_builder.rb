@@ -62,6 +62,11 @@ module PrimerFormBuilder
       super(name, *(args << options))
     end
 
+    def collection_select(method, collection, value_method, text_method, options = {}, html_options = {})
+      html_options[:class] = [html_options[:class], :'form-select']
+      super(method, collection, value_method, text_method, options, html_options)
+    end
+
     def datetime_select(method, options = {}, html_options = {})
       html_options[:class] = [html_options[:class], :'form-select']
       super(method, options, html_options)
